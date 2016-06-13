@@ -128,7 +128,7 @@ int main(void) {
 	// Set up gps 
     gps_init();
     loc_t data;
-   	loc_t prev_data;
+    loc_t prev_data;
 	printf("-----> GPS INITIALIZED\n");
 	
     // Set up Accelerometer
@@ -142,29 +142,19 @@ int main(void) {
 	adxl345_init(fd);
 	printf("-----> ACCELEROMETER INITIALIZED\n");
     
-// TODO:
-	// In This script: 
-	// 		set up fprintf to run only when threshold reached.   (20 minutes)
-	//
-	// BASH SCRIPT WORK:
-	//		Look up of internet in the bash script file must change to once a minute (10 minutes)
-	// 		upload file in bash script has to change 	(10 minutes)
-	//
-	// GENERAL:  (Rest of the day)
-	//		what does the accelerometer readings mean (why 65000)
-	//		how to distinguish +/- axes 
 
-double acc_x;
-double acc_y;
-double acc_z;
+  double acc_x;
+  double acc_y;
+  double acc_z;
 
 	gps_location(&prev_data);
-    while (1) { 
-      FILE *fp;
-      fp = fopen("/home/pi/KDI_GPS_AXIS/axisgps_kdi.txt", "a");
+  FILE *fp;
+	
+  while (1) { 
+      fp = fopen("/home/pi/kdi_gps_3axis/axisgps_kdi.txt", "a");
       gps_location(&data);
       acc_xyz = adxl345_read_xyz(fd);
- 	  
+
       acc_x = convert_To_Gs(acc_xyz.x);
       acc_y = convert_To_Gs(acc_xyz.y);
       acc_z = convert_To_Gs(acc_xyz.z);
@@ -182,8 +172,8 @@ double acc_z;
       // printf("\nGy- set at: %lf", negGyThreshold);
       // printf("\n");
       // printf("current data\n");
-      printf("TimeStamp: %lf lat: %lf long: %lf alt: %lf speed: %lf x: %lf y: %lf z: %lf\n", data.timestamp, data.latitude, 
-          data.longitude, data.altitude, data.speed, acc_x, acc_y, acc_z);
+//      printf("TimeStamp: %lf lat: %lf long: %lf alt: %lf speed: %lf x: %lf y: %lf z: %lf\n", data.timestamp, data.latitude, 
+//          data.longitude, data.altitude, data.speed, acc_x, acc_y, acc_z);
       // printf("previous data\n");
       // printf("TimeStamp: %lf lat: %lf long: %lf alt: %lf speed: %lf x: %lf y: %lf z: %lf\n", prev_data.timestamp, prev_data.latitude, 
       //     prev_data.longitude, prev_data.altitude, prev_data.speed, acc_x, acc_y, acc_z);
@@ -199,12 +189,12 @@ double acc_z;
      	negGzThreshold <= acc_z || posGxThreshold <= acc_x || negGxThreshold <= acc_x || 
      	posGyThreshold <= acc_y || negGyThreshold <= acc_y)
      {
-        printf("\n\n**********DATA ENTRY***************\n\n");
+//        printf("\n\n**********DATA ENTRY***************\n\n");
         fprintf(fp, "%lf, %lf, %lf, %lf, %lf, %lf, %lf, %lf\n", data.timestamp, data.latitude, data.longitude, data.altitude, 
         	data.speed, acc_x, acc_y, acc_z);       
 	
- 			  printf("TimeStamp: %lf lat: %lf long: %lf alt: %lf speed: %lf x: %lf y: %lf z: %lf\n", data.timestamp, data.latitude, 
-   				data.longitude, data.altitude, data.speed, acc_x, acc_y, acc_z);
+// 	printf("TimeStamp: %lf lat: %lf long: %lf alt: %lf speed: %lf x: %lf y: %lf z: %lf\n", data.timestamp, data.latitude, 
+//   				data.longitude, data.altitude, data.speed, acc_x, acc_y, acc_z);
    			
         prev_data = data; 
       }

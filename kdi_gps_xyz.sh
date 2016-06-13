@@ -1,16 +1,17 @@
 #!/bin/bash
 #My first script 
 #
+cd kdi_gps_3axis
 DATE1="$(date +'%m-%d-%Y')"
 echo "Started on: " $DATE1
 echo "Start script has been started"
-#	sudo sleep 30                        #Should be changed to look up if gpsd has been properly recognized/ connected. The next
+	sudo sleep 30                        #Should be changed to look up if gpsd has been properly recognized/ connected. The next
 										# 3 lines aren't guaranteed to run automatically at boot up, thus the delay
 	sudo killall gpsd
 	sudo gpsd /dev/ttyAMA0 -F /var/run/gpsd.sock
-	sudo gcc -o gps_kdi /home/pi/KDI_GPS_AXIS/position_logger.c -lgps -lm -lwiringPi -lconfig
+	sudo gcc -o gps_kdi /home/pi/kdi_gps_3axis/position_logger.c -lgps -lm -lwiringPi -lconfig
 	
-	sudo ./gps_kdi& 
+	sudo ./gps_kdi & 
 #Program ID 
 	PID=$!
 #Set up FTP 
@@ -18,16 +19,17 @@ HOST=192.168.1.20
 USER=ivy
 PASSWD=n3wm@y2016
 
-	sleep 10
+	sleep 30
 
 while :
 do
 	if ping -q -c 1 -W 1 google.com >/dev/null; then
 		echo "The network is up"
 		DATE2="$(date +'%m-%d-%Y')"
-		sudo kill $PID
-
-		cat axisgps_kdi.txt >> ${DATE1}.txt
+		sudo kill -9 -${PID}
+		echo "logger process  ====================> killed"
+	
+		sudo cat axisgps_kdi.txt >> ${DATE1}.txt
 		ftp -inv $HOST <<-EOF
 		user $USER $PASSWD
 		cd alex/CANBUS
@@ -42,11 +44,10 @@ do
 		fi
 		echo "gps_data.txt===================> sent to server"
 		
-		yes| rm axisgps_kdi.txt
-		echo "gps_data.txt ==================> Removed"
+		sudo cp /dev/null axisgps_kdi.txt
+		echo "gps_data.txt ==================> Contents Removed"
 		
-		
-		sudo ./gps_kdi&
+		sudo ./gps_kdi &
 		echo "PositionLog.c ==================> Restarted"
 		
 		sleep 1m
