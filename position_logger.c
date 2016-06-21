@@ -189,12 +189,12 @@ int main(void) {
      	negGzThreshold <= acc_z || posGxThreshold <= acc_x || negGxThreshold <= acc_x || 
      	posGyThreshold <= acc_y || negGyThreshold <= acc_y)
      {
-//        printf("\n\n**********DATA ENTRY***************\n\n");
+        printf("\n\n**********DATA ENTRY***************\n\n");
         fprintf(fp, "%lf, %lf, %lf, %lf, %lf, %lf, %lf, %lf\n", data.timestamp, data.latitude, data.longitude, data.altitude, 
         	data.speed, acc_x, acc_y, acc_z);       
 	
-// 	printf("TimeStamp: %lf lat: %lf long: %lf alt: %lf speed: %lf x: %lf y: %lf z: %lf\n", data.timestamp, data.latitude, 
-//   				data.longitude, data.altitude, data.speed, acc_x, acc_y, acc_z);
+ 	printf("TimeStamp: %lf lat: %lf long: %lf alt: %lf speed: %lf x: %lf y: %lf z: %lf\n", data.timestamp, data.latitude, 
+   				data.longitude, data.altitude, data.speed, acc_x, acc_y, acc_z);
    			
         prev_data = data; 
       }

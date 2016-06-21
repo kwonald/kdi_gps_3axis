@@ -20,6 +20,7 @@ USER=ivy
 PASSWD=n3wm@y2016
 
 	sleep 30
+#sleep 10 
 
 while :
 do
@@ -50,10 +51,10 @@ do
 		sudo ./gps_kdi &
 		echo "PositionLog.c ==================> Restarted"
 		
-		sleep 1m
+	
 		# This delay is to account for IF a boat is sitting at the dock (connected to internet) for a prolonged 
 		# period of time. We don't want multiple files to server with useless data (change from 1m to whatever chosen, for final product)
-#		sleep 1m
+		sleep 1m
 	else
 		echo "The network is down. Do nothing."
 
